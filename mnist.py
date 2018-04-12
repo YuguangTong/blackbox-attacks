@@ -1,7 +1,7 @@
 from keras.datasets import mnist
 from keras.models import Sequential, model_from_json
 from keras.layers import Dense, Dropout, Activation, Flatten, Input
-from keras.layers import Convolution2D, MaxPooling2D
+from keras.layers import Convolution2D, MaxPooling2D, Conv2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import np_utils
 
@@ -64,8 +64,10 @@ def data_mnist(one_hot=True):
 
 def modelA():
     model = Sequential()
-    model.add(Conv2D(64, (5, 5),
-                            padding='valid'))
+    model.add(Conv2D(64, (5, 5), padding='valid',
+                     input_shape=(FLAGS.IMAGE_ROWS,
+                                  FLAGS.IMAGE_COLS,
+                                  FLAGS.NUM_CHANNELS)))
     model.add(Activation('relu'))
 
     model.add(Conv2D(64, (5, 5)))
@@ -90,6 +92,7 @@ def modelB():
     model.add(Convolution2D(64, 8, 8,
                             subsample=(2, 2),
                             border_mode='same'))
+
     model.add(Activation('relu'))
 
     model.add(Convolution2D(128, 6, 6,

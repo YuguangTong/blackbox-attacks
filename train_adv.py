@@ -17,7 +17,7 @@ def main(model_name, adv_model_names, model_type):
     assert keras.backend.backend() == "tensorflow"
     set_mnist_flags()
 
-    flags.DEFINE_bool('NUM_EPOCHS', args.epochs, 'Number of epochs')
+    flags.DEFINE_bool('NUM_EPOCHS', args.num_epochs, 'Number of epochs')
 
     # Get MNIST test data
     X_train, Y_train, X_test, Y_test = data_mnist()
@@ -60,7 +60,7 @@ def main(model_name, adv_model_names, model_type):
     tf_train(x, y, model, X_train, Y_train, data_gen, x_advs=x_advs, benign = args.ben)
 
     # Finally print the result!
-    test_error = tf_test_error_rate(model, x, X_test, Y_test)
+    _, _, test_error = tf_test_error_rate(model, x, X_test, Y_test)
     print('Test error: %.1f%%' % test_error)
     model_name += '_' + str(eps) + '_' + str(norm) + '_' + ens_str
     if args.iter == 1:
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     parser.add_argument('adv_models', nargs='*',
                         help='path to adv model(s)')
     parser.add_argument("--type", type=int, help="model type", default=0)
-    parser.add_argument("--epochs", type=int, default=12,
+    parser.add_argument("--num_epochs", type=int, default=12,
                         help="number of epochs")
     parser.add_argument("--eps", type=float, default=0.3,
                         help="FGS attack scale")
